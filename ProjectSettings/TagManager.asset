@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Stage
+  - Goal
+  - Ball
+  - Manager
   layers:
   - Default
   - TransparentFX
