@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Launcher : MonoBehaviour
 {
-    // the rigid body of the launcher
-    public Rigidbody2D rigidbody;
-
     // the ball being launched
     public GameObject ball;
 
@@ -15,6 +13,12 @@ public class Launcher : MonoBehaviour
 
     // the gate stopping the ball form being launched.
     public GameObject gate;
+
+    // launch power bar
+    public Slider powerBar;
+
+    // becomes 'true' when the ball is launched.
+    public bool launched = false;
 
     [Header("Functions")]
 
@@ -27,19 +31,21 @@ public class Launcher : MonoBehaviour
     // enable rotation
     public bool controlRot = true;
 
-    // becomes 'true' when the ball is launched.
-    public bool launched = false;
+    // control launch power
+    public bool controlPower = true;
 
     // launch power
-    public float launchPower = 100;
+    public float launchPower = 100.0F;
+
+    // increments for changing power (multiplied by delta time).
+    public float powerInc = 40.0F;
+
+    // the limits on how high and low launch power can be.
+    public Vector2 powerLimits = new Vector2(20.0F, 100.0F);
 
     // Start is called before the first frame update
     void Start()
     {
-        // if 'launcherBody' is empty.
-        if (ball == null)
-            rigidbody = GetComponent<Rigidbody2D>();
-
         // if 'ball' is empty.
         if (ball == null)
             ball = GameObject.Find("Ball");
@@ -51,6 +57,10 @@ public class Launcher : MonoBehaviour
         // finds the 'gate' object that stops the ball from being launched
         if (gate == null)
             gate = GameObject.Find("Gate");
+
+        // finds the power bar if it's not set.
+        if (powerBar == null)
+            powerBar = FindObjectOfType<Slider>();
     }
 
 
@@ -101,8 +111,24 @@ public class Launcher : MonoBehaviour
         transform.rotation = objectRot;
     }
 
+    // checks to see if the launcher is in the view.
+    private bool WorldPointInView(Vector3 point)
+    {
+        // checks area
+        bool inX, inY;
+
+        // gets the viewport position
+        Vector3 viewPos = Camera.main.WorldToViewportPoint(point);
+
+        // check horizontal an vertical.
+        inX = (viewPos.x >= 0 && viewPos.x <= 1.0);
+        inY = (viewPos.y >= 0 && viewPos.y <= 1.0);
+
+        return (inX && inY);
+    }
+
     // launches the ball
-    void LaunchBall()
+    private void LaunchBall()
     {
         // ball body not set.
         if (ballBody == null)
@@ -131,8 +157,12 @@ public class Launcher : MonoBehaviour
             // gets rigid body force.
             // rigidbody.AddForce(force, ForceMode2D.Impulse);
 
+            // translation amount
+            Vector2 tlate = force * Time.deltaTime;
+
             // translates object.
-            transform.Translate(force * Time.deltaTime);
+            if (WorldPointInView(transform.position + new Vector3(tlate.x, tlate.y, 0.0F)))
+                transform.Translate(force * Time.deltaTime);
         }
 
         // enable user rotation.
@@ -145,6 +175,36 @@ public class Launcher : MonoBehaviour
             }
         }
 
+        // controls the launch power
+        if(controlPower)
+        {
+            // direction of power
+            float direc = 0.0F;
+
+            // decrease
+            if (Input.GetKey(KeyCode.Less) || Input.GetKey(KeyCode.LeftBracket) || Input.GetKey(KeyCode.LeftCurlyBracket) ||
+                Input.GetKey(KeyCode.Keypad1))
+                direc = -1.0F;
+
+            // increase
+            if (Input.GetKey(KeyCode.Greater) || Input.GetKey(KeyCode.RightBracket) || Input.GetKey(KeyCode.RightCurlyBracket) ||
+                Input.GetKey(KeyCode.Keypad2))
+                direc = 1.0F;
+
+            // the direction has been set.
+            if(direc != 0.0F)
+            {
+                launchPower += powerInc * direc * Time.deltaTime;
+                launchPower = Mathf.Clamp(launchPower, powerLimits.x, powerLimits.y);
+            }
+        }
+
+        // adjusting power bar
+        if(powerBar != null)
+        {
+            float value = Mathf.Clamp01(Mathf.InverseLerp(powerLimits.x, powerLimits.y, launchPower));
+            powerBar.value = value;
+        }
 
         // launches the ball
         if (Input.GetAxisRaw("Fire1") != 0 && Input.anyKeyDown)
