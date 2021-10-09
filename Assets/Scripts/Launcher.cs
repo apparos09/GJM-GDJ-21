@@ -11,7 +11,7 @@ public class Launcher : MonoBehaviour
     public Rigidbody2D ballBody;
 
     // launch power
-    private float power = 10;
+    public float power = 100;
 
     // becomes 'true' when the ball is launched.
     public bool launched = false;
@@ -28,62 +28,80 @@ public class Launcher : MonoBehaviour
             ballBody = ball.GetComponent<Rigidbody2D>();
     }
 
+
+    // checks to see if the cursor is in the window.
+    // public static bool CursorInWindow()
+    // {
+    //     bool inX, inY;
+    //     inX = (Input.GetAxisRaw("Mouse X") >= 0.0F && Input.GetAxisRaw("Mouse X") <= Screen.width);
+    //     inY = (Input.GetAxisRaw("Mouse Y") >= 0.0F && Input.GetAxisRaw("Mouse Y") <= Screen.height);
+    // 
+    //     Debug.Log("Screen: " + new Vector2(Screen.width, Screen.height).ToString());
+    // 
+    //     return (inX && inY);
+    //     
+    // }
+
+    // rotates to face the mouse.
+    public void RotateToFaceMouse2D()
+    {
+        // mouse world position
+        Vector3 mouseWpos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        // move to be relative to world origin
+        Vector3 fromOrigin = mouseWpos - transform.position;
+        fromOrigin.z = 0.0F;
+
+        // rotation value
+        float theta = Vector3.Angle(Vector3.up, fromOrigin);
+
+        // rotation direction
+        float direc = (mouseWpos.x < transform.position.x) ? 1 : -1;
+
+        // reset to base rotation
+        Vector2 rotXY = new Vector2(transform.rotation.x, transform.rotation.y); // save x and y
+        transform.rotation = Quaternion.identity;
+
+        // rotates to face camera
+        transform.Rotate(0.0F, 0.0F, theta * direc);
+
+        // give back x and y rotations
+        Quaternion objectRot = transform.rotation;
+        objectRot.x = rotXY.x;
+        objectRot.y = rotXY.x;
+        transform.rotation = objectRot;
+    }
+
     // launches the ball
     void LaunchBall()
     {
         // ball body not set.
-        if(ballBody == null)
+        if (ballBody == null)
             return;
 
         // ball force
-        Vector2 force = ballBody.gameObject.transform.up;
-        force *= power;
-
-        ballBody.AddForce(ballBody.gameObject.transform.up, ForceMode2D.Impulse);
+        Vector3 force = transform.up * power;
+        ballBody.AddForce(force, ForceMode2D.Impulse);
         launched = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // gets mouse position in world space
-        // Debug.Log(new Vector3(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"), 0.0F));
-        // Vector3 mouseWpos = Camera.main.ScreenToWorldPoint(new Vector3(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"), 0.0F));
-        // mouseWpos.z = transform.position.z;
-
-        // Debug.Log(mouseWpos);
-
-        // looks at mouse position
-        // transform.LookAt(mouseWpos);
-
-        // if (Input.GetAxisRaw("Mouse X") != 0)
-        //     LaunchBall();
-        // 
-        // launches the ball
-        if (Input.GetAxisRaw("Fire1") != 0 && Input.anyKeyDown)
+        // rotate to mouse position.
+        if (Input.GetAxisRaw("Mouse X") != 0 || Input.GetAxisRaw("Mouse Y") != 0 && Input.anyKeyDown)
         {
-            // Vector3 mouseWpos = Camera.main.ScreenToWorldPoint(new Vector3(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"), 0.0F));
-            // mouseWpos.z = transform.position.z;
-            Debug.Log("MP: " + Input.mousePosition.ToString());
-            Vector3 mouseWpos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Debug.Log("WP: " + mouseWpos.ToString());
-
-            // mouseWpos.z = transform.position.z;
-            // Debug.Log("X:" + Vector3.Angle(transform.right, mouseWpos));
-            // Debug.Log("Y:" + Vector3.Angle(transform.up, mouseWpos));
-            // Debug.Log("Z:" + Vector3.Angle(transform.forward, mouseWpos));
-
-            transform.rotation = Quaternion.identity;
-            transform.Rotate(0.0F, 0.0F, -Vector3.Angle(transform.up, mouseWpos));
-            
+            RotateToFaceMouse2D();
         }
 
 
+        // launches the ball
+        if (Input.GetAxisRaw("Fire1") != 0 && Input.anyKeyDown)
+        {
+            LaunchBall();
+        }
 
-        // if(Input.GetAxisRaw("Horizontal") != 0)
-        // {
-        //     transform.Rotate(0.0F, 0.0F, Input.GetAxisRaw("Horizontal") * 10);
-        // }
+        
 
     }
 }
