@@ -671,7 +671,7 @@ MonoBehaviour:
   powerBar: {fileID: 0}
   launched: 0
   controlMove: 1
-  moveSpeed: {x: 5, y: 5}
+  moveSpeed: {x: 15, y: 15}
   controlRot: 1
   controlPower: 1
   launchPower: 100
@@ -697,6 +697,9 @@ MonoBehaviour:
   rotDirec: 0
   randomPosX: 0
   randomPosY: 0
+  p0Offset: {x: 0, y: 0}
+  p1Offset: {x: 0, y: 0}
+  moveSpeed: 100
   randomPower: 0
   powerSpeed: 60
   powerDirec: -1

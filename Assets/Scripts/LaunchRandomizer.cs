@@ -25,6 +25,14 @@ public class LaunchRandomizer : MonoBehaviour
     public bool randomPosX;
     public bool randomPosY;
 
+    // position offsets
+    public Vector2 p0Offset;
+    public Vector2 p1Offset;
+    
+    // movement speed and direction
+    public float moveSpeed = 15.0F;
+    public int moveDirec = 0;
+
     [Header("Power")]
     // random power (increaseas and decreases)
     public bool randomPower;
@@ -116,6 +124,8 @@ public class LaunchRandomizer : MonoBehaviour
             // if 'true', disable the launcher movement control.
             if (disableControls)
                 launcher.controlMove = false;
+
+            // does nothing because I ran out of time.
         }
 
         // randomizes the position Y
@@ -124,28 +134,34 @@ public class LaunchRandomizer : MonoBehaviour
             // if 'true', disable the launcher movement control.
             if (disableControls)
                 launcher.controlMove = false;
+
+            // does nothing because I ran out of time.
         }
 
         // randomizes power
-        if(randomPower)
+        if (randomPower)
         {
             // random power
             if (disableControls)
                 launcher.controlPower = false;
 
-            // gets the value
-            float value = launcher.launchPower + powerSpeed * powerDirec * Time.deltaTime;
 
-            // clamp
-            value = Mathf.Clamp(value, launcher.powerLimits.x, launcher.powerLimits.y);
+            // only randomizes if nothing has been launched yet.
+            if(!launcher.launched)
+            {
+                // gets the value
+                float value = launcher.launchPower + powerSpeed * powerDirec * Time.deltaTime;
 
-            // end of bar reached.
-            if (value <= launcher.powerLimits.x || value >= launcher.powerLimits.y)
-                powerDirec *= -1;
+                // clamp
+                value = Mathf.Clamp(value, launcher.powerLimits.x, launcher.powerLimits.y);
 
-            // set launch power.
-            launcher.launchPower = value;
-            
+                // end of bar reached.
+                if (value <= launcher.powerLimits.x || value >= launcher.powerLimits.y)
+                    powerDirec *= -1;
+
+                // set launch power.
+                launcher.launchPower = value;
+            }
         }
     }
 }

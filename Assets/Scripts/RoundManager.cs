@@ -40,9 +40,13 @@ public class RoundManager : MonoBehaviour
         // if round info has been found.
         if(roundInfo != null)
         {
-            roundNumber = roundInfo.clearedRounds + 1;
             roundInfo.InitializeRound(this); // initializes the round.
+            roundNumber = roundInfo.clearedRounds + 1; // round number
+            timeStart = roundInfo.roundLength;
         }
+
+        // set timer value.
+        timer = Mathf.Abs(timeStart);
 
         // destroys the round info object.
         if(roundInfo != null)
@@ -61,6 +65,12 @@ public class RoundManager : MonoBehaviour
         // negative round number provided.
         if (rNum < 0)
             roundNumber = 1;
+    }
+
+    // resets the length of the round
+    public void ResetTimer()
+    {
+        timer = Mathf.Abs(timeStart);
     }
 
     // instantiate round info object.

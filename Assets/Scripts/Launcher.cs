@@ -26,7 +26,7 @@ public class Launcher : MonoBehaviour
     public bool controlMove = true;
 
     // movement speed for launcher.
-    public Vector2 moveSpeed = new Vector2(5.0F, 5.0F);
+    public Vector2 moveSpeed = new Vector2(15.0F, 15.0F);
 
     // enable rotation
     public bool controlRot = true;

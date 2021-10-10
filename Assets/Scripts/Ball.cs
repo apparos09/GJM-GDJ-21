@@ -15,8 +15,8 @@ public class Ball : MonoBehaviour
     static int ballCount = 0;
 
     // bounds for the screen - deletes ball ounce outside of these bounds
-    Vector2 xBounds = new Vector2(-0.75F, 1.75F);
-    Vector2 yBounds = new Vector2(-0.75F, 1.75F);
+    private Vector2 xBounds = new Vector2(-0.75F, 1.75F);
+    private Vector2 yBounds = new Vector2(-0.75F, 10.0F);
     
     // Start is called before the first frame update
     void Start()
