@@ -44,14 +44,11 @@ public class Ball : MonoBehaviour
     {
         // ball out of bounds, so destroy it.
         if (!InBounds())
-            Destroy(gameObject);
-    }
-
-    // if the ball is being destroyed.
-    private void OnDestroy()
-    {
-        // the player missed.
-        if (roundManager != null)
-            roundManager.Missed();
+        {
+            roundManager.Missed(); // say object has missed.
+            Destroy(gameObject); // destroy object.
+            // Destroy()
+        }
+            
     }
 }

@@ -18,12 +18,26 @@ public class RoundManager : MonoBehaviour
 
     // start of the timer.
     public float timeStart = 100;
-    
+
+    // timer text object.
+    public TMPro.TextMeshProUGUI timerText;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        // looks for round info object.
+        RoundInfo roundInfo = FindObjectOfType<RoundInfo>();
+
+        // if round info has been found.
+        if(roundInfo != null)
+        {
+            roundNumber = roundInfo.clearedRounds + 1;
+        }
+
+        // destroys the round info object.
+        if(roundInfo != null)
+            Destroy(roundInfo.gameObject);
     }
 
     // sets the round number, which determines the round behaviour.
@@ -34,9 +48,48 @@ public class RoundManager : MonoBehaviour
             roundNumber = 1;
     }
 
+    // instantiate round info object.
+    private RoundInfo InstantiateRoundInfo()
+    {
+        // grabs prefab for round info, and gets the component.
+        Object prefab = Resources.Load("Prefabs/Round Info");
+        // object for round info component
+        GameObject riObject = GameObject.Find("Round Info");
+        // component for round info
+        RoundInfo riComp;
+
+        // prefab not found, so make object.
+        if (prefab == null && riObject == null)
+        {
+            riObject = new GameObject("Round Info");
+        }
+        else
+        {
+            riObject = (GameObject)Instantiate(prefab);
+        }
+
+        // grabs component
+        riComp = riObject.GetComponent<RoundInfo>();
+
+        // prefab did not have component.
+        if (riComp == null)
+        {
+            riComp = riObject.AddComponent<RoundInfo>();
+        }
+
+        // returns round component.
+        return riComp;
+    }
+
     // goes to the next round.
     public void NextRound()
     {
+        // makes round info object.
+        RoundInfo roundInfo = InstantiateRoundInfo();
+
+        // saves as new round
+        roundInfo.clearedRounds = roundNumber;
+
         // reloads the current scene.
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
@@ -44,6 +97,12 @@ public class RoundManager : MonoBehaviour
     // ends the round.
     public void GameOver()
     {
+        // makes round info object.
+        RoundInfo roundInfo = InstantiateRoundInfo();
+
+        // saves as new round
+        roundInfo.clearedRounds = roundNumber - 1;
+
         // game over
         SceneManager.LoadScene("EndScene");
     }
@@ -87,6 +146,12 @@ public class RoundManager : MonoBehaviour
                 Debug.Log("Time Over");
                 GameOver();
             }
+        }
+
+        // timer text is set.
+        if(timerText != null)
+        {
+            timerText.text = "TIME: " + timer.ToString("F2");
         }
     }
 }
