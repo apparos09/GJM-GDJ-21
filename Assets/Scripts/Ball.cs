@@ -28,16 +28,22 @@ public class Ball : MonoBehaviour
         // if this is the ball held by the launcher, change its position.
         if(launcherBall)
         {
-            // finds the ball holder.
-            GameObject holder = GameObject.Find("Ball Holder");
-
-            // gets position in world space.
-            if (holder != null)
-                transform.position = holder.transform.position;
+            SetInLauncher();
         }
 
         // adds to ball count
         ballCount++;
+    }
+
+    // set ball in launcher
+    public void SetInLauncher()
+    {
+        // finds the ball holder.
+        GameObject holder = GameObject.Find("Ball Holder");
+
+        // gets position in world space.
+        if (holder != null)
+            transform.position = holder.transform.position;
     }
 
     // checks if the ball is in the game bounds.
@@ -68,6 +74,16 @@ public class Ball : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // finds the round manager.
+        if (roundManager == null)
+            roundManager = FindObjectOfType<RoundManager>();
+
+        // if ball is not in launcher.
+        if(launcherBall && !roundManager.launcher.launched)
+        {
+            SetInLauncher();
+        }
+
         // ball out of bounds, so destroy it.
         if (!InBounds())
         {

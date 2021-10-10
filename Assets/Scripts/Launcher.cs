@@ -152,6 +152,8 @@ public class Launcher : MonoBehaviour
         {
             // gets movement direction
             Vector2 direc = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+
+            // setting force
             Vector2 force = Vector2.Scale(direc, moveSpeed);
 
             // gets rigid body force.
@@ -162,7 +164,16 @@ public class Launcher : MonoBehaviour
 
             // translates object.
             if (WorldPointInView(transform.position + new Vector3(tlate.x, tlate.y, 0.0F)))
+            {
+                // returns to default orientation for proper translation.
+                Quaternion rot = transform.rotation;
+                transform.rotation = Quaternion.identity;
+
+                // translates to transform
                 transform.Translate(force * Time.deltaTime);
+                transform.rotation = rot;
+            }
+                
         }
 
         // enable user rotation.

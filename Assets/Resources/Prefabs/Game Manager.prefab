@@ -44,7 +44,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roundNumber: 1
+  launcher: {fileID: 0}
   activeTimer: 1
-  timer: 100
-  timeStart: 100
+  timer: 30
+  timeStart: 30
   timerText: {fileID: 0}

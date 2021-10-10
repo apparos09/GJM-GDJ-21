@@ -18,6 +18,12 @@ public class RoundInfo : MonoBehaviour
     // goal
     public Goal goal;
 
+    // ball
+    public Ball ball;
+
+    // layout options
+    public const int LAYOUT_OPTIONS = 1;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -59,7 +65,7 @@ public class RoundInfo : MonoBehaviour
         // set round manager.
         roundManager = rm;
 
-        // FINDING VALUES //
+        // FINDING VARIABLES //
 
         // the launcher set
         if (launcher == null)
@@ -68,9 +74,12 @@ public class RoundInfo : MonoBehaviour
         // the launcher needs to be made.
         if (launcher == null)
         {
-            Debug.LogError("Attempting to make Launcher.");
+            Debug.LogError("Attempting to make launcher.");
             GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/Launcher"));
             launcher = temp.GetComponent<Launcher>();
+
+            // shift launcher position
+            launcher.transform.Translate(12.0F, 0.0F, 0.0F);
         }
 
         // no goal set, so find it.
@@ -83,13 +92,46 @@ public class RoundInfo : MonoBehaviour
             Debug.LogError("Attempting to make Goal.");
             GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/Goal"));
             goal = temp.GetComponent<Goal>();
+
+            // shift launcher position
+            goal.transform.Translate(-12.0F, 0.0F, 0.0F);
         }
 
+        // checks for the ball.
+        if (ball == null)
+        {
+            // finds balls
+            Ball[] balls = FindObjectsOfType<Ball>();
+
+            // checks balls to find launcher ball
+            for(int i = 0; i < balls.Length; i++)
+            {
+                if(balls[i].launcherBall)
+                {
+                    ball = balls[i];
+                    break;
+                }
+            }
+
+            // ball not found, so instantiate new one.
+            if(ball == null)
+            {
+                GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/Ball"));
+                ball = temp.GetComponent<Ball>();
+                ball.launcherBall = true;
+            }
+        }
+
+        // SETTING UP STAGE
+        InitializeRoundLayout();
+
+        // SETTING POSITIONS //
+        
         // set launcher position
         if(launcher != null)
         {
             // find possible positions
-            LauncherSpot[] ls = FindObjectsOfType<LauncherSpot>();
+            LauncherSpot[] ls = FindObjectsOfType<LauncherSpot>(false);
             
             // if there is a position to find.
             if (ls.Length != 0)
@@ -103,7 +145,7 @@ public class RoundInfo : MonoBehaviour
         if(goal != null)
         {
             // find possible positions
-            GoalSpot[] gs = FindObjectsOfType<GoalSpot>();
+            GoalSpot[] gs = FindObjectsOfType<GoalSpot>(false);
 
             // if there is a position to find.
             if (gs.Length != 0)
@@ -113,13 +155,26 @@ public class RoundInfo : MonoBehaviour
             }
         }
 
-        // TODO: if time allows, check to see if there's a ball in the launcher.
         // this would only be needed for scenes with multiple balls.
     }
 
-    // Update is called once per frame
-    void Update()
+    // initializes the round map
+    public void InitializeRoundLayout()
     {
-        
+        // round layout
+        int layoutOption = Random.Range(0, LAYOUT_OPTIONS) + 1;
+
+        // layout object
+        GameObject layout;
+
+        // checks to see which map to load.
+        switch(layoutOption)
+        {
+            default:
+            case 0:
+            case 1:
+                layout = (GameObject)Instantiate(Resources.Load("Prefabs/Stages/Empty Stage 1"));
+                break;
+        }
     }
 }

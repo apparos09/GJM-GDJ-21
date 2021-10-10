@@ -9,15 +9,18 @@ public class RoundManager : MonoBehaviour
     // the round number
     public int roundNumber = 1;
 
+    // the round launcher
+    public Launcher launcher;
+
     [Header("Timer")]
     // timer is active.
     public bool activeTimer = true;
 
     // timer value.
-    public float timer = 100;
+    public float timer = 30;
 
     // start of the timer.
-    public float timeStart = 100;
+    public float timeStart = 30;
 
     // timer text object.
     public TMPro.TextMeshProUGUI timerText;
@@ -26,6 +29,11 @@ public class RoundManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // if the launcher isn't set
+        if (launcher == null)
+            launcher = FindObjectOfType<Launcher>();
+
+
         // looks for round info object.
         RoundInfo roundInfo = FindObjectOfType<RoundInfo>();
 
