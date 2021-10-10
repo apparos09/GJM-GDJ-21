@@ -120,9 +120,9 @@ public class Launcher : MonoBehaviour
         // gets the viewport position
         Vector3 viewPos = Camera.main.WorldToViewportPoint(point);
 
-        // check horizontal an vertical.
-        inX = (viewPos.x >= 0 && viewPos.x <= 1.0);
-        inY = (viewPos.y >= 0 && viewPos.y <= 1.0);
+        // check horizontal and vertical.
+        inX = (viewPos.x >= 0.0F && viewPos.x <= 1.0);
+        inY = (viewPos.y >= 0.0F && viewPos.y <= 1.0);
 
         return (inX && inY);
     }
@@ -207,7 +207,7 @@ public class Launcher : MonoBehaviour
         }
 
         // launches the ball
-        if (Input.GetAxisRaw("Fire1") != 0 && Input.anyKeyDown)
+        if ((Input.GetAxisRaw("Fire1") != 0 || Input.GetAxisRaw("Jump") != 0) && launched == false)
         {
             LaunchBall();
         }
