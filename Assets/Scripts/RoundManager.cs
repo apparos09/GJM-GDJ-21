@@ -33,11 +33,18 @@ public class RoundManager : MonoBehaviour
         if(roundInfo != null)
         {
             roundNumber = roundInfo.clearedRounds + 1;
+            roundInfo.InitializeRound(this); // initializes the round.
         }
 
         // destroys the round info object.
         if(roundInfo != null)
             Destroy(roundInfo.gameObject);
+    }
+
+    // gets the round number.
+    public int GetRoundNumber()
+    {
+        return roundNumber;
     }
 
     // sets the round number, which determines the round behaviour.

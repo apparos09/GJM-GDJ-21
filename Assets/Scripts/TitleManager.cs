@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+// title manager
 public class TitleManager : MonoBehaviour
 {
     // Start is called before the first frame update

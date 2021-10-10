@@ -12,12 +12,18 @@ public class Ball : MonoBehaviour
     Vector2 xBounds = new Vector2(-0.75F, 1.75F);
     Vector2 yBounds = new Vector2(-0.75F, 1.75F);
 
+    // ball count
+    static int ballCount = 0;
+
     // Start is called before the first frame update
     void Start()
     {
         // finds the round manager.
         if (roundManager == null)
             roundManager = FindObjectOfType<RoundManager>();
+
+        // adds to ball count
+        ballCount++;
     }
 
     // checks if the ball is in the game bounds.
@@ -39,6 +45,12 @@ public class Ball : MonoBehaviour
         return (inX && inY);
     }
 
+    // remaining balls on the field.
+    public static int GetBallCount()
+    {
+        return ballCount;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -50,5 +62,12 @@ public class Ball : MonoBehaviour
             // Destroy()
         }
             
+    }
+
+    // called when the object is destroyed.
+    private void OnDestroy()
+    {
+        // reduce ball count.
+        ballCount--;
     }
 }

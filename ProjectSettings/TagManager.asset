@@ -8,6 +8,7 @@ TagManager:
   - Goal
   - Ball
   - Manager
+  - Spot
   layers:
   - Default
   - TransparentFX
