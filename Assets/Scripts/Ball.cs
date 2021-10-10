@@ -8,19 +8,33 @@ public class Ball : MonoBehaviour
     // the round manager
     public RoundManager roundManager;
 
-    // bounds for the screen - deletes ball ounce outside of these bounds
-    Vector2 xBounds = new Vector2(-0.75F, 1.75F);
-    Vector2 yBounds = new Vector2(-0.75F, 1.75F);
+    // if 'true', this is the ball held by the launcher.
+    public bool launcherBall = true;
 
     // ball count
     static int ballCount = 0;
 
+    // bounds for the screen - deletes ball ounce outside of these bounds
+    Vector2 xBounds = new Vector2(-0.75F, 1.75F);
+    Vector2 yBounds = new Vector2(-0.75F, 1.75F);
+    
     // Start is called before the first frame update
     void Start()
     {
         // finds the round manager.
         if (roundManager == null)
             roundManager = FindObjectOfType<RoundManager>();
+
+        // if this is the ball held by the launcher, change its position.
+        if(launcherBall)
+        {
+            // finds the ball holder.
+            GameObject holder = GameObject.Find("Ball Holder");
+
+            // gets position in world space.
+            if (holder != null)
+                transform.position = holder.transform.position;
+        }
 
         // adds to ball count
         ballCount++;

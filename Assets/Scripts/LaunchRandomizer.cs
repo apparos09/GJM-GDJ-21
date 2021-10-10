@@ -9,16 +9,16 @@ public class LaunchRandomizer : MonoBehaviour
     public bool enableRandomizer = true;
 
     // the launcher
-    Launcher launcher;
+    public Launcher launcher;
 
     // if 'true', launcher controls that the randomizer has control over are destroyed.
-    public bool disableLauncherControls = true;
+    public bool disableControls = true;
 
     [Header("Rotation")]
     // random rotation (spins object)
     public bool randomRot;
-    public float factor = 10.0F; // rotation factor
-    public int direc = 0; // direction (-1 or 1)
+    public float rotSpeed = 200.0F; // rotation factor
+    public int rotDirec = 0; // direction (-1 or 1)
 
     [Header("Position")]
     // random position
@@ -28,14 +28,46 @@ public class LaunchRandomizer : MonoBehaviour
     [Header("Power")]
     // random power (increaseas and decreases)
     public bool randomPower;
-    
+    public float powerSpeed = 60.0F;
+    public int powerDirec = -1;// power change (+/-)
 
     // Start is called before the first frame update
     void Start()
     {
         // launcher not set.
         if (launcher == null)
-            launcher = FindObjectOfType<Launcher>();
+        {
+            // searches for launcher component on current object.
+            launcher = gameObject.GetComponent<Launcher>();
+
+            // if the launcher is still false, search the whole scene.
+            if(launcher == null)
+                launcher = FindObjectOfType<Launcher>();
+        }
+
+        // could not find launcher, and was not given one.
+        if (launcher == null)
+            Debug.LogError("No Launcher Set or Found.");
+    }
+
+    // randomizes the rotation direction
+    protected void RandomizeRotationDirection()
+    {
+        // number
+        int num = Random.Range(0, 2);
+
+        // choice
+        switch (num)
+        {
+            default:
+            case 0: // left (clockwise)
+                rotDirec = -1;
+                break;
+
+            case 1: // right (counter-clockwise)
+                rotDirec = 1;
+                break;
+        }
 
     }
 
@@ -65,25 +97,55 @@ public class LaunchRandomizer : MonoBehaviour
         // randomizes the rotation
         if(randomRot)
         {
+            // if 'true', disable the launcher rotation control.
+            if (disableControls)
+                launcher.controlRot = false;
 
+
+            // randomizes the rotation direction.
+            if (rotDirec == 0)
+                RandomizeRotationDirection();
+
+            // rotates
+            launcher.transform.Rotate(0.0F, 0.0F, rotSpeed * rotDirec * Time.deltaTime);
         }
 
         // randomizes the position X
         if(randomPosX)
         {
-
+            // if 'true', disable the launcher movement control.
+            if (disableControls)
+                launcher.controlMove = false;
         }
 
         // randomizes the position Y
         if (randomPosY)
         {
-
+            // if 'true', disable the launcher movement control.
+            if (disableControls)
+                launcher.controlMove = false;
         }
 
         // randomizes power
         if(randomPower)
         {
+            // random power
+            if (disableControls)
+                launcher.controlPower = false;
 
+            // gets the value
+            float value = launcher.launchPower + powerSpeed * powerDirec * Time.deltaTime;
+
+            // clamp
+            value = Mathf.Clamp(value, launcher.powerLimits.x, launcher.powerLimits.y);
+
+            // end of bar reached.
+            if (value <= launcher.powerLimits.x || value >= launcher.powerLimits.y)
+                powerDirec *= -1;
+
+            // set launch power.
+            launcher.launchPower = value;
+            
         }
     }
 }

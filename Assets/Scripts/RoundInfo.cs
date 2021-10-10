@@ -12,6 +12,9 @@ public class RoundInfo : MonoBehaviour
     // the amount of rounds passed.
     public int clearedRounds = 0;
 
+    // launcher
+    public Launcher launcher;
+
     // goal
     public Goal goal;
 
@@ -56,24 +59,62 @@ public class RoundInfo : MonoBehaviour
         // set round manager.
         roundManager = rm;
 
+        // FINDING VALUES //
+
+        // the launcher set
+        if (launcher == null)
+            launcher = FindObjectOfType<Launcher>();
+
+        // the launcher needs to be made.
+        if (launcher == null)
+        {
+            Debug.LogError("Attempting to make Launcher.");
+            GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/Launcher"));
+            launcher = temp.GetComponent<Launcher>();
+        }
+
         // no goal set, so find it.
-        if(goal == null)
+        if (goal == null)
             goal = FindObjectOfType<Goal>();
 
         // the goal needs to be made.
         if(goal == null)
         {
-            Debug.LogError("Attempting to Make Goal.");
+            Debug.LogError("Attempting to make Goal.");
             GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/Goal"));
             goal = temp.GetComponent<Goal>();
         }
 
-        // no goal was found, and no goal could be made.
-        if(goal == null)
+        // set launcher position
+        if(launcher != null)
         {
-            Debug.LogError("Goal does not exit. Cannot initialize.");
-            return;
+            // find possible positions
+            LauncherSpot[] ls = FindObjectsOfType<LauncherSpot>();
+            
+            // if there is a position to find.
+            if (ls.Length != 0)
+            {
+                int index = Random.Range(0, ls.Length);
+                launcher.transform.position = ls[index].transform.position;
+            }
         }
+
+        // set goal position
+        if(goal != null)
+        {
+            // find possible positions
+            GoalSpot[] gs = FindObjectsOfType<GoalSpot>();
+
+            // if there is a position to find.
+            if (gs.Length != 0)
+            {
+                int index = Random.Range(0, gs.Length);
+                goal.transform.position = gs[index].transform.position;
+            }
+        }
+
+        // TODO: if time allows, check to see if there's a ball in the launcher.
+        // this would only be needed for scenes with multiple balls.
     }
 
     // Update is called once per frame
