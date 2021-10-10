@@ -249,27 +249,27 @@ public class RoundInfo : MonoBehaviour
 
 
         // changing round length.
-        if (roundLength >= 30)
+        if (clearedRounds >= 30)
         {
             roundLength = 8.0F;
         }
-        else if (roundLength >= 25)
+        else if (clearedRounds >= 25)
         {
             roundLength = 10.0F;
         }
-        else if(roundLength >= 20)
+        else if(clearedRounds >= 20)
         {
             roundLength = 15.0F;
         }
-        else if (roundLength >= 15)
+        else if (clearedRounds >= 15)
         {
             roundLength = 20.0F;
         }
-        else if (roundLength >= 10)
+        else if (clearedRounds >= 10)
         {
             roundLength = 25.0F;
         }
-        else if (roundLength >= 5)
+        else if (clearedRounds >= 5)
         {
             roundLength = 30.0F;
         }

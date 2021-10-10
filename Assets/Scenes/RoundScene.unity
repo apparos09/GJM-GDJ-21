@@ -1182,6 +1182,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7513246085473952920}
     - target: {fileID: 4846390272730832218, guid: d1aea12c2198f30449e5ae68bdfd0823, type: 3}
+      propertyPath: roundText
+      value: 
+      objectReference: {fileID: 361600209}
+    - target: {fileID: 4846390272730832218, guid: d1aea12c2198f30449e5ae68bdfd0823, type: 3}
       propertyPath: timerText
       value: 
       objectReference: {fileID: 1177394797}

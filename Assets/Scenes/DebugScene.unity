@@ -1726,6 +1726,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Empty Stage 1
       objectReference: {fileID: 0}
+    - target: {fileID: 941497495258205587, guid: 9631c8361a1cdd74a93fa3597d30effc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9631c8361a1cdd74a93fa3597d30effc, type: 3}
 --- !u!1001 &1149745498663446265
@@ -1783,6 +1787,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Empty Stage 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2877153737310499863, guid: a532d7882d20a544cba95976f7a25512, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a532d7882d20a544cba95976f7a25512, type: 3}
 --- !u!1001 &1661794778134275335
@@ -1839,6 +1847,10 @@ PrefabInstance:
     - target: {fileID: 1661794776833036543, guid: bf567f6091f34e04aacac7923c81be48, type: 3}
       propertyPath: m_Name
       value: Walled Stage 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1661794776833036543, guid: bf567f6091f34e04aacac7923c81be48, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf567f6091f34e04aacac7923c81be48, type: 3}
@@ -2016,6 +2028,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4846390272730832218, guid: d1aea12c2198f30449e5ae68bdfd0823, type: 3}
+      propertyPath: roundText
+      value: 
+      objectReference: {fileID: 361600209}
     - target: {fileID: 4846390272730832218, guid: d1aea12c2198f30449e5ae68bdfd0823, type: 3}
       propertyPath: timerText
       value: 

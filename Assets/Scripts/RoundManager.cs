@@ -25,6 +25,8 @@ public class RoundManager : MonoBehaviour
     // timer text object.
     public TMPro.TextMeshProUGUI timerText;
 
+    // round number
+    public TMPro.TextMeshProUGUI roundText;
 
     // Start is called before the first frame update
     void Start()
@@ -177,6 +179,13 @@ public class RoundManager : MonoBehaviour
         if(timerText != null)
         {
             timerText.text = "TIME: " + timer.ToString("F2");
+        }
+
+        // update round text.
+        if(roundText!= null)
+        {
+            // default: "ROUND  000"
+            roundText.text = "ROUND  " + roundNumber.ToString("D3");
         }
     }
 }
