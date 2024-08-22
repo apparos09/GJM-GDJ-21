@@ -604,6 +604,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79dcb6392fb2d804c874f174f587598f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fullScreenToggle: {fileID: 2002169546}
   exitButton: {fileID: 1896108065}
 --- !u!1 &573700217
 GameObject:
@@ -2296,13 +2297,13 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 455605454}
-        m_TargetAssemblyTypeName: SceneHelper, Assembly-CSharp
-        m_MethodName: FullScreenToggle
-        m_Mode: 1
+      - m_Target: {fileID: 455605456}
+        m_TargetAssemblyTypeName: TitleManager, Assembly-CSharp
+        m_MethodName: OnFullScreenToggleChanged
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 2002169546}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Toggle, UnityEngine.UI
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
