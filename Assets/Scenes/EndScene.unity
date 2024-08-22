@@ -876,6 +876,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clearedRounds: 0
   roundText: {fileID: 1480604894}
+  exitButton: {fileID: 432936359}
 --- !u!4 &1504123480
 Transform:
   m_ObjectHideFlags: 0

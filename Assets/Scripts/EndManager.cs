@@ -13,6 +13,9 @@ public class EndManager : MonoBehaviour
     // the text to show cleared rounds
     public TMPro.TextMeshProUGUI roundText = null;
 
+    // The exit button.
+    public Button exitButton;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +32,21 @@ public class EndManager : MonoBehaviour
         // destroys the game object.
         if(roundInfo != null)
             Destroy(roundInfo.gameObject);
+
+        // The exit button.
+        if (exitButton != null)
+        {
+            // If this is running in WebGl, disable the exit button.
+            if (Application.platform == RuntimePlatform.WebGLPlayer)
+            {
+                exitButton.interactable = false;
+            }
+            else
+            {
+                // The exit button is on.
+                exitButton.interactable = true;
+            }
+        }
     }
 
     // returns to the title screen.
